@@ -10,15 +10,22 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "Source Code Pro:size=12:antialias=true", "monospace:size=12" };
 static const char dmenufont[]       =		"Source Code Pro:size=12:antialias=true";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
-static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+/* NOTE(mh): Chaging colors -/+ */
+static const char col_black[]       	= "#222222";
+static const char col_gray[]        	= "#444444";
+static const char col_gray_light[]  	= "#bbbbbb";
+static const char col_white[]       	= "#eeeeee";
+static const char col_manjaro_dark[]	= "#1b2224";
+static const char col_manjaro_light[]	= "#2f4048";
+static const char col_manjaro_light2[]= "#8eb4be";
+static const char *colors[][3]      	= {
+	/*               fg         bg         					border   */
+	[SchemeNorm] = { col_white, col_manjaro_light, 	col_gray 	},					// for active
+	[SchemeSel]  = { col_white, col_manjaro_dark,		col_manjaro_light2 }, // for inactive
+	/*NOTE(mh): Applied from diff*/
+	[SchemeTagsSel]  = { col_white, col_manjaro_light,  "#000000"  },
+	[SchemeTagsNorm] = { col_white, col_manjaro_light, 	"#000000" 	},					// for active
+
 };
 
 /* tagging */
@@ -76,6 +83,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+	/* NOTE(mh): Maybe this will work?*/
+	{ MODKEY|ShiftMask,							XK_F10,		 zoom,					 {0} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },

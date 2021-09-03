@@ -1,0 +1,20 @@
+My patched version of the suckless dynamic window manager (dwm)
+
+	Current applies patches:
+		- fullgaps
+		- centertitle
+		- resizepoint
+		- alwayscentered
+		- pertags
+		- ewmhs support for wmctrl & xdotool
+		- colorbar
+		- center on float (no fkin clue the real name)
+	Current changes to dwm.c/config.h:
+		- DMT12345B
+		- cmd				=> kitty
+		- launch		=> rofi
+		- borderpx 	= 2
+		- snappx		= 2
+	Current diff / Ready to compile:
+		- alltags.diff -> config.h => dwm.c	
+
