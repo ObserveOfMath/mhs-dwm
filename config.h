@@ -8,6 +8,8 @@ static const unsigned int snap      = 2;       /* snap pixel */
 */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+/*NOTE(mh): Added from diff*/
+static const int focusonwheel				= 0;
 static const char *fonts[]          = { "Source Code Pro:size=12:antialias=true", "monospace:size=12" };
 static const char dmenufont[]       =		"Source Code Pro:size=12:antialias=true";
 /* NOTE(mh): Chaging colors -/+ */
@@ -86,7 +88,10 @@ static Key keys[] = {
 	/* NOTE(mh): Maybe this will work?*/
 	{ MODKEY|ShiftMask,							XK_F10,		 zoom,					 {0} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
+	//{ MODKEY,                       XK_Tab,    view,           {0} },
+	/*NOTE(mh): Added from diff (2)*/
+	{ MODKEY,         					    XK_Tab,       shiftviewclients, { .i = +1 } },
+	{ MODKEY,    					          XK_backslash, shiftviewclients, { .i = -1 } },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
