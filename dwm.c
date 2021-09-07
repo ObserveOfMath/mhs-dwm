@@ -205,6 +205,8 @@ static void resizemouse(const Arg *arg);
 static void restack(Monitor *m);
 static void run(void);
 static void scan(void);
+/*NOTE(mh): This was made by me*/
+static void sendandfocus(const Arg *arg);
 static int sendevent(Client *c, Atom proto);
 static void sendmon(Client *c, Monitor *m);
 static void setclientstate(Client *c, long state);
@@ -309,6 +311,13 @@ struct Pertag {
 struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
 
 /* function implementations */
+
+/*NOTE(mh): This function is mine*/
+void
+sendandfocus(const Arg *arg){
+	tag	((Arg *)arg);
+	view((Arg *)arg);
+}
 
 /*NOTE(mh): Added from a weird diff file*/
 void

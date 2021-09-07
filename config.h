@@ -105,15 +105,27 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	/*NOTE(mh): Gotta manually apply these*/
-	{ MODKEY|ShiftMask,							XK_F1,		 tagall,				 {.v = "1"} },
-	{ MODKEY|ShiftMask,							XK_F2,		 tagall,				 {.v = "2"} },
-	{ MODKEY|ShiftMask,							XK_F3,		 tagall,				 {.v = "3"} },
-	{ MODKEY|ShiftMask,							XK_F4,		 tagall,				 {.v = "4"} },
-	{ MODKEY|ShiftMask,							XK_F5,		 tagall,				 {.v = "5"} },
-	{ MODKEY|ShiftMask,							XK_F6,		 tagall,				 {.v = "6"} },
-	{ MODKEY|ShiftMask,							XK_F7,		 tagall,				 {.v = "7"} },
-	{ MODKEY|ShiftMask,							XK_F8,		 tagall,				 {.v = "8"} },
-	{ MODKEY|ShiftMask,							XK_F9,		 tagall,				 {.v = "9"} },
+	{ MODKEY,							XK_F1,		 tagall,				 {.v = "1"} },
+	{ MODKEY,							XK_F2,		 tagall,				 {.v = "2"} },
+	{ MODKEY,							XK_F3,		 tagall,				 {.v = "3"} },
+	{ MODKEY,							XK_F4,		 tagall,				 {.v = "4"} },
+	{ MODKEY,							XK_F5,		 tagall,				 {.v = "5"} },
+	{ MODKEY,							XK_F6,		 tagall,				 {.v = "6"} },
+	{ MODKEY,							XK_F7,		 tagall,				 {.v = "7"} },
+	{ MODKEY,							XK_F8,		 tagall,				 {.v = "8"} },
+	{ MODKEY,							XK_F9,		 tagall,				 {.v = "9"} },
+	/*NOTE(mh): These were made by me*/
+	/*NOTE(mh): For now, those only work with individual windows*/
+	/*TODO(mh): Make those work with the tagall patch*/
+	{ MODKEY|ShiftMask,		XK_F1,		sendandfocus,		 { .ui = 1 << 0} },
+	{ MODKEY|ShiftMask,		XK_F2,		sendandfocus,		 { .ui = 1 << 1} },
+	{ MODKEY|ShiftMask,		XK_F3,		sendandfocus,		 { .ui = 1 << 2} },
+	{ MODKEY|ShiftMask,		XK_F4,		sendandfocus,		 { .ui = 1 << 3} },
+	{ MODKEY|ShiftMask,		XK_F5,		sendandfocus,		 { .ui = 1 << 4} },
+	{ MODKEY|ShiftMask,		XK_F6,		sendandfocus,		 { .ui = 1 << 5} },
+	{ MODKEY|ShiftMask,		XK_F7,		sendandfocus,		 { .ui = 1 << 6} },
+	{ MODKEY|ShiftMask,		XK_F8,		sendandfocus,		 { .ui = 1 << 7} },
+	{ MODKEY|ShiftMask,		XK_F9,		sendandfocus,		 { .ui = 1 << 8} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
