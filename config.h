@@ -57,7 +57,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -66,6 +66,7 @@ static const Layout layouts[] = {
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+#define ALT Mod1Mask
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -90,8 +91,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	//{ MODKEY,                       XK_Tab,    view,           {0} },
 	/*NOTE(mh): Added from diff (2)*/
-	{ MODKEY,         					    XK_Tab,       shiftviewclients, { .i = +1 } },
-	{ MODKEY,    					          XK_backslash, shiftviewclients, { .i = -1 } },
+	{ ALT, 		        					    XK_Tab,       shiftviewclients, { .i = +1 } },
+	{ ALT, 		   					          XK_backslash, shiftviewclients, { .i = -1 } },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
