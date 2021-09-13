@@ -77,6 +77,9 @@ static const char *termcmd[]  = { "kitty", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
+	/*NOTE(mh): From #dwm.c*/
+	/* unsigned int									KeySym		 void 						const Arg*/
+	/* mod													keysym		(*func)(const Arg*) arg		*/
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
@@ -118,15 +121,25 @@ static Key keys[] = {
 	/*NOTE(mh): These were made by me*/
 	/*NOTE(mh): For now, those only work with individual windows*/
 	/*TODO(mh): Make those work with the tagall patch*/
-	{ MODKEY|ShiftMask,		XK_F1,		sendandfocus,		 { .ui = 1 << 0} },
-	{ MODKEY|ShiftMask,		XK_F2,		sendandfocus,		 { .ui = 1 << 1} },
-	{ MODKEY|ShiftMask,		XK_F3,		sendandfocus,		 { .ui = 1 << 2} },
-	{ MODKEY|ShiftMask,		XK_F4,		sendandfocus,		 { .ui = 1 << 3} },
-	{ MODKEY|ShiftMask,		XK_F5,		sendandfocus,		 { .ui = 1 << 4} },
-	{ MODKEY|ShiftMask,		XK_F6,		sendandfocus,		 { .ui = 1 << 5} },
-	{ MODKEY|ShiftMask,		XK_F7,		sendandfocus,		 { .ui = 1 << 6} },
-	{ MODKEY|ShiftMask,		XK_F8,		sendandfocus,		 { .ui = 1 << 7} },
-	{ MODKEY|ShiftMask,		XK_F9,		sendandfocus,		 { .ui = 1 << 8} },
+	{ MODKEY|ShiftMask,		XK_F1,		sendall,		 { .ui = 1 << 0} },
+	{ MODKEY|ShiftMask,		XK_F2,		sendall,		 { .ui = 1 << 1} },
+	{ MODKEY|ShiftMask,		XK_F3,		sendall,		 { .ui = 1 << 2} },
+	{ MODKEY|ShiftMask,		XK_F4,		sendall,		 { .ui = 1 << 3} },
+	{ MODKEY|ShiftMask,		XK_F5,		sendall,		 { .ui = 1 << 4} },
+	{ MODKEY|ShiftMask,		XK_F6,		sendall,		 { .ui = 1 << 5} },
+	{ MODKEY|ShiftMask,		XK_F7,		sendall,		 { .ui = 1 << 6} },
+	{ MODKEY|ShiftMask,		XK_F8,		sendall,		 { .ui = 1 << 7} },
+	{ MODKEY|ShiftMask,		XK_F9,		sendall,		 { .ui = 1 << 8} },
+	/*NOTE(mh): Subject to change*/
+	{ MODKEY|ControlMask,		XK_F1,		grabtag,			 { .ui = 1 << 0} },
+	{ MODKEY|ControlMask,		XK_F2,		grabtag,			 { .ui = 1 << 1} },
+	{ MODKEY|ControlMask,		XK_F3,		grabtag,			 { .ui = 1 << 2} },
+	{ MODKEY|ControlMask,		XK_F4,		grabtag,			 { .ui = 1 << 3} },
+	{ MODKEY|ControlMask,		XK_F5,		grabtag,			 { .ui = 1 << 4} },
+	{ MODKEY|ControlMask,		XK_F6,		grabtag,			 { .ui = 1 << 5} },
+	{ MODKEY|ControlMask,		XK_F7,		grabtag,			 { .ui = 1 << 6} },
+	{ MODKEY|ControlMask,		XK_F8,		grabtag,			 { .ui = 1 << 7} },
+	{ MODKEY|ControlMask,		XK_F9,		grabtag,			 { .ui = 1 << 8} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -137,6 +150,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY,							 XK_u,		  unfocus,								 {0} },
 };
 
 /* button definitions */

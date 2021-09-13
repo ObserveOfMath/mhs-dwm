@@ -1,0 +1,7 @@
+# Standard C
+*.o
+*.def.h
+
+# Specific
+*.png
+dwm

@@ -94,7 +94,7 @@ struct Client {
 	int oldx, oldy, oldw, oldh;
 	int basew, baseh, incw, inch, maxw, maxh, minw, minh;
 	int bw, oldbw;
-	unsigned int tags;
+	unsigned int tags; //*NOTE(mh): I'm assuming this is equal to 8?
 	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
 	Client *next;
 	Client *snext;
@@ -182,6 +182,7 @@ static Atom getatomprop(Client *c, Atom prop);
 static int getrootptr(int *x, int *y);
 static long getstate(Window w);
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
+static void grabtag(const Arg* arg);	
 static void grabbuttons(Client *c, int focused);
 static void grabkeys(void);
 static void incnmaster(const Arg *arg);
@@ -206,7 +207,7 @@ static void restack(Monitor *m);
 static void run(void);
 static void scan(void);
 /*NOTE(mh): This was made by me*/
-static void sendandfocus(const Arg *arg);
+static void sendall(const Arg *arg);
 static int sendevent(Client *c, Atom proto);
 static void sendmon(Client *c, Monitor *m);
 static void setclientstate(Client *c, long state);
@@ -313,10 +314,15 @@ struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
 /* function implementations */
 
 /*NOTE(mh): This function is mine*/
+/*NOTE(mh): Refactor this*/
 void
-sendandfocus(const Arg *arg){
-	tag	((Arg *)arg);
+sendall(const Arg *arg){
+	tag((Arg *)arg);
 	view((Arg *)arg);
+}
+
+void
+grabtag(const Arg* arg){
 }
 
 /*NOTE(mh): Added from a weird diff file*/
@@ -324,23 +330,27 @@ void
 tagall(const Arg *arg) {
 	if (!selmon->clients)
 		return;
-	/* if parameter starts with F, just move floating windows */
-	int floating_only = (char *)arg->v && ((char *)arg->v)[0] == 'F' ? 1 : 0;
-	int tag = (char *)arg->v ? atoi(((char *)arg->v) + floating_only) : 0;
+	/*NOTE(mh): I assume this is just plain ol' zero*/
+	//int floating_only = (char *)arg->v && ((char *)arg->v)[0] == 'F' ? 1 : 0;
+
+	/*NOTE(mh): this returns a int with the hr tag number*/
+	//int tag = (char *)arg->v ? atoi(((char *)arg->v) + floating_only) : 0;
+
+	int tag = (char *)arg->v ? atoi(((char *)arg->v)) : 0;
+
 	int j;
 	Client* c;
 	if(tag >= 0 && tag < LENGTH(tags))
 		for(c = selmon->clients; c; c = c->next)
 		{
-			if(!floating_only || c->isfloating)
-				for(j = 0; j < LENGTH(tags); j++)
+			for(j = 0; j < LENGTH(tags); j++)
+			{
+				if(c->tags & 1 << j && selmon->tagset[selmon->seltags] & 1 << j)
 				{
-					if(c->tags & 1 << j && selmon->tagset[selmon->seltags] & 1 << j)
-					{
-						c->tags = c->tags ^ (1 << j & TAGMASK);
-						c->tags = c->tags | 1 << (tag-1);
-					}
+					c->tags = c->tags ^ (1 << j & TAGMASK);
+					c->tags = c->tags | 1 << (tag-1);
 				}
+			}
 		}
 	arrange(selmon);
 }
