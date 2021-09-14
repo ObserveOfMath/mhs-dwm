@@ -31,8 +31,8 @@ static const char *colors[][3]      	= {
 };
 
 /* tagging */
-static const char *tags[] = { "D", "M", "T", "1", "2", "3", "4", "5", "B" };
-
+static const char *alttags[] = { "•", "•", "•", "•", "•", "•", "•", "•", "•" };
+static const char *tags[] = { "◦", "◦", "◦", "◦", "◦", "◦", "◦", "◦", "◦" };
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
@@ -51,8 +51,8 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]",      tile },    /* first entry is default */
-	{ "<>",      NULL },    /* no layout function means floating behavior */
+	{ "X",      tile },    /* first entry is default */
+	{ "O",      NULL },    /* no layout function means floating behavior */
 	{ "*",      monocle },
 };
 
@@ -118,9 +118,7 @@ static Key keys[] = {
 	{ MODKEY,							XK_F7,		 tagall,				 {.v = "7"} },
 	{ MODKEY,							XK_F8,		 tagall,				 {.v = "8"} },
 	{ MODKEY,							XK_F9,		 tagall,				 {.v = "9"} },
-	/*NOTE(mh): These were made by me*/
-	/*NOTE(mh): For now, those only work with individual windows*/
-	/*TODO(mh): Make those work with the tagall patch*/
+	/*NOTE(mh): sendall patch .wit*/
 	{ MODKEY|ShiftMask,		XK_F1,		sendall,		 { .ui = 1 << 0} },
 	{ MODKEY|ShiftMask,		XK_F2,		sendall,		 { .ui = 1 << 1} },
 	{ MODKEY|ShiftMask,		XK_F3,		sendall,		 { .ui = 1 << 2} },
@@ -130,7 +128,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_F7,		sendall,		 { .ui = 1 << 6} },
 	{ MODKEY|ShiftMask,		XK_F8,		sendall,		 { .ui = 1 << 7} },
 	{ MODKEY|ShiftMask,		XK_F9,		sendall,		 { .ui = 1 << 8} },
-	/*NOTE(mh): Subject to change*/
+	/*NOTE(mh): graball patch .wit*/
 	{ MODKEY|ControlMask,		XK_F1,		grabtag,			 { .ui = 1 << 0} },
 	{ MODKEY|ControlMask,		XK_F2,		grabtag,			 { .ui = 1 << 1} },
 	{ MODKEY|ControlMask,		XK_F3,		grabtag,			 { .ui = 1 << 2} },

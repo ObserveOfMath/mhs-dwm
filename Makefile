@@ -29,17 +29,17 @@ clean:
 	rm -f dwm ${OBJ}
 
 uninstall:
-	rm -f /usr/bin/dwm
+	rm -f /usr/local/bin/dwm
 
 install: all
 	chmod 755 dwm
-	mv dwm /usr/bin/dwm
+	mv dwm /usr/local/bin/dwm
 	
 local: all
 	chmod 755 dwm
 
 link: all
 	chmod 755 dwm
-	ln -sf dwm /usr/bin/dwm
+	ln -sf dwm /usr/local/bin/dwm
 
 .PHONY: all options clean install uninstall
