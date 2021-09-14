@@ -5,3 +5,9 @@
 # Specific
 *.png
 dwm
+
+# VM analysis
+*-an*
+*.vim
+*-debug*
+print

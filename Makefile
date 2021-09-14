@@ -8,6 +8,9 @@ OBJ = ${SRC:.c=.o}
 
 all: options dwm
 
+debug:
+	gcc dwm-debug.c -o print
+
 options:
 	@echo dwm build options:
 	@echo "CFLAGS   = ${CFLAGS}"

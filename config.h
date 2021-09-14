@@ -33,6 +33,11 @@ static const char *colors[][3]      	= {
 /* tagging */
 static const char *alttags[] = { "•", "•", "•", "•", "•", "•", "•", "•", "•" };
 static const char *tags[] = { "◦", "◦", "◦", "◦", "◦", "◦", "◦", "◦", "◦" };
+/*
+static const char *untags[];	<- tags
+static const char *seltags[];	<- alttags
+static const char *curtags[];	<- (NEW)
+*/
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
@@ -77,9 +82,7 @@ static const char *termcmd[]  = { "kitty", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	/*NOTE(mh): From #dwm.c*/
-	/* unsigned int									KeySym		 void 						const Arg*/
-	/* mod													keysym		(*func)(const Arg*) arg		*/
+	/* Mod                          Keysym     *func           Arg      */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
@@ -92,7 +95,7 @@ static Key keys[] = {
 	/* NOTE(mh): Maybe this will work?*/
 	{ MODKEY|ShiftMask,							XK_F10,		 zoom,					 {0} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
-	//{ MODKEY,                       XK_Tab,    view,           {0} },
+	//{ MODKEY,                     XK_Tab,    view,           {0} },
 	/*NOTE(mh): Added from diff (2)*/
 	{ ALT, 		        					    XK_Tab,       shiftviewclients, { .i = +1 } },
 	{ ALT, 		   					          XK_backslash, shiftviewclients, { .i = -1 } },
