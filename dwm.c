@@ -231,7 +231,6 @@ static void sigchld(int unused);
 static void spawn(const Arg *arg);
 static void tag(const Arg *arg);
 static void tagall(const Arg *arg); /*NOTE(mh): Applied from diff*/
-static void ftagall(const Arg *arg); /*NOTE(mh): This is `tagall` sending the focus*/
 static void tagmon(const Arg *arg);
 static void tile(Monitor *);
 static void togglebar(const Arg *arg);

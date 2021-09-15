@@ -20,13 +20,14 @@ static const char col_white[]       	= "#eeeeee";
 static const char col_manjaro_dark[]	= "#1b2224";
 static const char col_manjaro_light[]	= "#2f4048";
 static const char col_manjaro_light2[]= "#8eb4be";
+static const char col_manjaro_light3[]= "#5c818a";
 static const char *colors[][3]      	= {
 	/*               fg         bg         					border   */
 	[SchemeNorm] = { col_white, col_manjaro_light, 	col_gray 	},					// for active
 	[SchemeSel]  = { col_white, col_manjaro_dark,		col_manjaro_light2 }, // for inactive
 	/*NOTE(mh): Applied from diff*/
-	[SchemeTagsSel]  = { col_white, col_manjaro_light,  "#000000"  },
-	[SchemeTagsNorm] = { col_white, col_manjaro_light, 	"#000000" 	},					// for active
+	[SchemeTagsSel]  = { col_white, col_manjaro_light, "#000000" },
+	[SchemeTagsNorm] = { col_manjaro_light3, col_manjaro_light, "#000000" },					// for active
 
 };
 
