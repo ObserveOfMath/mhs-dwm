@@ -31,13 +31,10 @@ static const char *colors[][3]      	= {
 };
 
 /* tagging */
+// static const char *ontags[] = { ... };
 static const char *alttags[] = { "•", "•", "•", "•", "•", "•", "•", "•", "•" };
 static const char *tags[] = { "◦", "◦", "◦", "◦", "◦", "◦", "◦", "◦", "◦" };
-/*
-static const char *untags[];	<- tags
-static const char *seltags[];	<- alttags
-static const char *curtags[];	<- (NEW)
-*/
+
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
@@ -112,15 +109,15 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	/*NOTE(mh): Gotta manually apply these*/
-	{ MODKEY,							XK_F1,		 tagall,				 {.v = "1"} },
-	{ MODKEY,							XK_F2,		 tagall,				 {.v = "2"} },
-	{ MODKEY,							XK_F3,		 tagall,				 {.v = "3"} },
-	{ MODKEY,							XK_F4,		 tagall,				 {.v = "4"} },
-	{ MODKEY,							XK_F5,		 tagall,				 {.v = "5"} },
-	{ MODKEY,							XK_F6,		 tagall,				 {.v = "6"} },
-	{ MODKEY,							XK_F7,		 tagall,				 {.v = "7"} },
-	{ MODKEY,							XK_F8,		 tagall,				 {.v = "8"} },
-	{ MODKEY,							XK_F9,		 tagall,				 {.v = "9"} },
+	{ MODKEY,							XK_F1,		 tagall,		 { .ui = 1 << 0 } }, // 1
+	{ MODKEY,							XK_F2,		 tagall,		 { .ui = 1 << 1 } }, // 2
+	{ MODKEY,							XK_F3,		 tagall,		 { .ui = 1 << 2 } }, // 4
+	{ MODKEY,							XK_F4,		 tagall,		 { .ui = 1 << 3 } }, // 8
+	{ MODKEY,							XK_F5,		 tagall,		 { .ui = 1 << 4 } }, // 16
+	{ MODKEY,							XK_F6,		 tagall,		 { .ui = 1 << 5 } }, // 32
+	{ MODKEY,							XK_F7,		 tagall,		 { .ui = 1 << 6 } }, // 64
+	{ MODKEY,							XK_F8,		 tagall,		 { .ui = 1 << 7 } }, // 128
+	{ MODKEY,							XK_F9,		 tagall,		 { .ui = 1 << 8 } }, // 256
 	/*NOTE(mh): sendall patch .wit*/
 	{ MODKEY|ShiftMask,		XK_F1,		sendall,		 { .ui = 1 << 0} },
 	{ MODKEY|ShiftMask,		XK_F2,		sendall,		 { .ui = 1 << 1} },
@@ -133,25 +130,15 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_F9,		sendall,		 { .ui = 1 << 8} },
 	/*NOTE(mh): graball patch .wit*/
 	/*NOTE(mh): Debuging this, change this to ControlMask later*/
-	{ MODKEY|ControlMask,	XK_F1,	 	grabtag,		 { .v = "1"} },
-	{ MODKEY|ControlMask,	XK_F2,		grabtag,		 { .v = "2"} },
-	{ MODKEY|ControlMask,	XK_F3,		grabtag,		 { .v = "3"} },
-	{ MODKEY|ControlMask,	XK_F4,		grabtag,		 { .v = "4"} },
-	{ MODKEY|ControlMask,	XK_F5,		grabtag,		 { .v = "5"} },
-	{ MODKEY|ControlMask,	XK_F6,		grabtag,		 { .v = "6"} },
-	{ MODKEY|ControlMask,	XK_F7,		grabtag,		 { .v = "7"} },
-	{ MODKEY|ControlMask,	XK_F8,		grabtag,		 { .v = "8"} },
-	{ MODKEY|ControlMask,	XK_F9,		grabtag,		 { .v = "9"} },
-	/*NOTE(mh): `tagall` with `graball`*/
-	{ MODKEY|ShiftMask|ControlMask,	XK_F1, ftagall, {.v = "1"} },
-	{ MODKEY|ShiftMask|ControlMask,	XK_F2, ftagall, {.v = "2"} },
-	{ MODKEY|ShiftMask|ControlMask,	XK_F3, ftagall, {.v = "3"} },
-	{ MODKEY|ShiftMask|ControlMask,	XK_F4, ftagall, {.v = "4"} },
-	{ MODKEY|ShiftMask|ControlMask,	XK_F5, ftagall, {.v = "5"} },
-	{ MODKEY|ShiftMask|ControlMask,	XK_F6, ftagall, {.v = "6"} },
-	{ MODKEY|ShiftMask|ControlMask,	XK_F7, ftagall, {.v = "7"} },
-	{ MODKEY|ShiftMask|ControlMask,	XK_F8, ftagall, {.v = "8"} },
-	{ MODKEY|ShiftMask|ControlMask,	XK_F9, ftagall, {.v = "9"} },
+	{ MODKEY|ControlMask,	XK_F1,	 	grabtag,		 { .v = "1" } },
+	{ MODKEY|ControlMask,	XK_F2,		grabtag,		 { .v = "2" } },
+	{ MODKEY|ControlMask,	XK_F3,		grabtag,		 { .v = "3" } },
+	{ MODKEY|ControlMask,	XK_F4,		grabtag,		 { .v = "4" } },
+	{ MODKEY|ControlMask,	XK_F5,		grabtag,		 { .v = "5" } },
+	{ MODKEY|ControlMask,	XK_F6,		grabtag,		 { .v = "6" } },
+	{ MODKEY|ControlMask,	XK_F7,		grabtag,		 { .v = "7" } },
+	{ MODKEY|ControlMask,	XK_F8,		grabtag,		 { .v = "8" } },
+	{ MODKEY|ControlMask,	XK_F9,		grabtag,		 { .v = "9" } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -162,7 +149,6 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-	{ MODKEY,							 XK_u,		  unfocus,								 {0} },
 };
 
 /* button definitions */

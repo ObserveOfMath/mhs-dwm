@@ -360,60 +360,39 @@ grabtag(const Arg *arg) {
 /*NOTE(mh): Added from a weird diff file*/
 void
 tagall(const Arg *arg) {
+	/*NOTE(mh): This will have arg->ui*/
+
 	if (!selmon->clients)
 		return;
 
-	int floating_only = (char *)arg->v && ((char *)arg->v)[0] == 'F' ? 1 : 0;
+	//int floating_only = (char *)arg->v && ((char *)arg->v)[0] == 'F' ? 1 : 0;
+	//int tag = (char *)arg->v ? atoi(((char *)arg->v) + floating_only) : 0;
+	int ui = arg->ui;
+	int tag = 1;
 
-	int tag = (char *)arg->v ? atoi(((char *)arg->v) + floating_only) : 0;
+	while (ui > 1) {
+		ui = ui >> 1;
+		tag++;
+	}
 
 	int j;
 	Client* c;
 	if(tag >= 0 && tag < LENGTH(tags))
 		for(c = selmon->clients; c; c = c->next)
 		{
-			if (!floating_only || c->isfloating) {
-				for(j = 0; j < LENGTH(tags); j++)
+			for(j = 0; j < LENGTH(tags); j++)
+			{
+				if(c->tags & 1 << j && selmon->tagset[selmon->seltags] & 1 << j)
 				{
-					if(c->tags & 1 << j && selmon->tagset[selmon->seltags] & 1 << j)
-					{
-						c->tags = c->tags ^ (1 << j & TAGMASK);
-						c->tags = c->tags | 1 << (tag-1);
-					}
+					c->tags = c->tags ^ (1 << j & TAGMASK);
+					c->tags = c->tags | 1 << (tag-1);
 				}
 			}
 		}
+	/*NOTE(mh): For fuck's sake*/
+	view((Arg *)arg);
 	arrange(selmon);
-}
 
-/*NOTE(mh): this is pretty much just `tagall` but it also sends focus*/
-void
-ftagall(const Arg *arg){
-	if (!selmon->clients)
-		return;
-
-	int floating_only = (char *)arg->v && ((char *)arg->v)[0] == 'F' ? 1 : 0;
-
-	int tag = (char *)arg->v ? atoi(((char *)arg->v) + floating_only) : 0;
-
-	int j;
-	Client* c;
-	if(tag >= 0 && tag < LENGTH(tags))
-		for(c = selmon->clients; c; c = c->next)
-		{
-			if (!floating_only || c->isfloating) {
-				for(j = 0; j < LENGTH(tags); j++)
-				{
-					if(c->tags & 1 << j && selmon->tagset[selmon->seltags] & 1 << j)
-					{
-						c->tags = c->tags ^ (1 << j & TAGMASK);
-						c->tags = c->tags | 1 << (tag-1);
-					}
-				}
-			}
-		}
-	arrange(selmon);
-	//focus(c);
 }
 
 void
