@@ -206,7 +206,6 @@ static void resizemouse(const Arg *arg);
 static void restack(Monitor *m);
 static void run(void);
 static void scan(void);
-/*NOTE(mh): This was made by me*/
 static void sendall(const Arg *arg);
 static int sendevent(Client *c, Atom proto);
 static void sendmon(Client *c, Monitor *m);
@@ -313,16 +312,40 @@ struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
 
 /* function implementations */
 
-/*NOTE(mh): This function is mine*/
-/*NOTE(mh): Refactor this*/
+/*TODO(mh): Refactor this*/
 void
 sendall(const Arg *arg){
 	tag((Arg *)arg);
 	view((Arg *)arg);
 }
 
+/*TODO(mh): Refactor (more like begin lol) this*/
 void
-grabtag(const Arg* arg){}
+grabtag(const Arg *arg) {
+
+	if (!selmon->clients)
+		return;
+
+	/*NOTE(mh): this returns a int with the human readable (1-beginning) tag number else zero*/
+	int tag = (char *)arg->v ? atoi(((char *)arg->v)) : 0;
+
+	int j;
+	Client* c;
+	if(tag >= 0 && tag < LENGTH(tags))
+		for(c = selmon->clients; c; c = c->next)
+		{
+			for(j = 0; j < LENGTH(tags); j++)
+			{
+				if(c->tags & 1 << j && (tag-1)==j)
+				{
+					c->tags = c->tags ^ (1 << j & TAGMASK);
+					c->tags = c->tags | selmon->tagset[selmon->seltags];
+					break;
+				}
+			}
+		}
+	arrange(selmon);
+}
 
 /*NOTE(mh): Added from a weird diff file*/
 void

@@ -132,15 +132,16 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_F8,		sendall,		 { .ui = 1 << 7} },
 	{ MODKEY|ShiftMask,		XK_F9,		sendall,		 { .ui = 1 << 8} },
 	/*NOTE(mh): graball patch .wit*/
-	{ MODKEY|ControlMask,		XK_F1,		grabtag,			 { .ui = 1 << 0} },
-	{ MODKEY|ControlMask,		XK_F2,		grabtag,			 { .ui = 1 << 1} },
-	{ MODKEY|ControlMask,		XK_F3,		grabtag,			 { .ui = 1 << 2} },
-	{ MODKEY|ControlMask,		XK_F4,		grabtag,			 { .ui = 1 << 3} },
-	{ MODKEY|ControlMask,		XK_F5,		grabtag,			 { .ui = 1 << 4} },
-	{ MODKEY|ControlMask,		XK_F6,		grabtag,			 { .ui = 1 << 5} },
-	{ MODKEY|ControlMask,		XK_F7,		grabtag,			 { .ui = 1 << 6} },
-	{ MODKEY|ControlMask,		XK_F8,		grabtag,			 { .ui = 1 << 7} },
-	{ MODKEY|ControlMask,		XK_F9,		grabtag,			 { .ui = 1 << 8} },
+	/*NOTE(mh): Debuging this, change this to ControlMask later*/
+	{ MODKEY|ControlMask,	XK_F1,	 	grabtag,		 { .v = "1"} },
+	{ MODKEY|ControlMask,	XK_F2,		grabtag,		 { .v = "2"} },
+	{ MODKEY|ControlMask,	XK_F3,		grabtag,		 { .v = "3"} },
+	{ MODKEY|ControlMask,	XK_F4,		grabtag,		 { .v = "4"} },
+	{ MODKEY|ControlMask,	XK_F5,		grabtag,		 { .v = "5"} },
+	{ MODKEY|ControlMask,	XK_F6,		grabtag,		 { .v = "6"} },
+	{ MODKEY|ControlMask,	XK_F7,		grabtag,		 { .v = "7"} },
+	{ MODKEY|ControlMask,	XK_F8,		grabtag,		 { .v = "8"} },
+	{ MODKEY|ControlMask,	XK_F9,		grabtag,		 { .v = "9"} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
