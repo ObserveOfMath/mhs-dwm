@@ -231,6 +231,7 @@ static void sigchld(int unused);
 static void spawn(const Arg *arg);
 static void tag(const Arg *arg);
 static void tagall(const Arg *arg); /*NOTE(mh): Applied from diff*/
+static void ftagall(const Arg *arg); /*NOTE(mh): This is `tagall` sending the focus*/
 static void tagmon(const Arg *arg);
 static void tile(Monitor *);
 static void togglebar(const Arg *arg);
@@ -259,8 +260,6 @@ static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
-/*TODO(mh): Delete this after*/
-static void focusonview(Client *c);
 
 /* variables */
 static const char broken[] = "broken";
@@ -317,7 +316,16 @@ struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
 /*TODO(mh): Refactor this*/
 void
 sendall(const Arg *arg){
-	tag((Arg *)arg);
+	/*NOTE(mh): Sending to the appropiate tag */
+	if (selmon->sel && arg->ui & TAGMASK) {
+		selmon->sel->tags = arg->ui & TAGMASK;
+
+		// Set the client to me
+		Client *c = selmon->clients;
+		focus(NULL);
+		arrange(selmon);
+	}
+	//tag((Arg *)arg);
 	view((Arg *)arg);
 }
 
@@ -328,7 +336,6 @@ grabtag(const Arg *arg) {
 	if (!selmon->clients)
 		return;
 
-	/*NOTE(mh): this returns a int with the human readable (1-beginning) tag number else zero*/
 	int tag = (char *)arg->v ? atoi(((char *)arg->v)) : 0;
 
 	int j;
@@ -350,20 +357,14 @@ grabtag(const Arg *arg) {
 	focus(c);
 }
 
-/*NOTE(mh): Purely for debugging function*/
-void
-focusonview(Client *c) {}
-
 /*NOTE(mh): Added from a weird diff file*/
 void
 tagall(const Arg *arg) {
 	if (!selmon->clients)
 		return;
 
-	/*NOTE(mh): I assume this is just plain ol' zero*/
 	int floating_only = (char *)arg->v && ((char *)arg->v)[0] == 'F' ? 1 : 0;
 
-	/*NOTE(mh): this returns a int with the human readable (1-beginning) tag number*/
 	int tag = (char *)arg->v ? atoi(((char *)arg->v) + floating_only) : 0;
 
 	int j;
@@ -383,6 +384,36 @@ tagall(const Arg *arg) {
 			}
 		}
 	arrange(selmon);
+}
+
+/*NOTE(mh): this is pretty much just `tagall` but it also sends focus*/
+void
+ftagall(const Arg *arg){
+	if (!selmon->clients)
+		return;
+
+	int floating_only = (char *)arg->v && ((char *)arg->v)[0] == 'F' ? 1 : 0;
+
+	int tag = (char *)arg->v ? atoi(((char *)arg->v) + floating_only) : 0;
+
+	int j;
+	Client* c;
+	if(tag >= 0 && tag < LENGTH(tags))
+		for(c = selmon->clients; c; c = c->next)
+		{
+			if (!floating_only || c->isfloating) {
+				for(j = 0; j < LENGTH(tags); j++)
+				{
+					if(c->tags & 1 << j && selmon->tagset[selmon->seltags] & 1 << j)
+					{
+						c->tags = c->tags ^ (1 << j & TAGMASK);
+						c->tags = c->tags | 1 << (tag-1);
+					}
+				}
+			}
+		}
+	arrange(selmon);
+	//focus(c);
 }
 
 void
@@ -1659,6 +1690,7 @@ setfullscreen(Client *c, int fullscreen)
 	}
 }
 
+/*TODO(mh): Make this functional ? */
 void
 setgaps(const Arg *arg)
 {

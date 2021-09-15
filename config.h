@@ -142,6 +142,16 @@ static Key keys[] = {
 	{ MODKEY|ControlMask,	XK_F7,		grabtag,		 { .v = "7"} },
 	{ MODKEY|ControlMask,	XK_F8,		grabtag,		 { .v = "8"} },
 	{ MODKEY|ControlMask,	XK_F9,		grabtag,		 { .v = "9"} },
+	/*NOTE(mh): `tagall` with `graball`*/
+	{ MODKEY|ShiftMask|ControlMask,	XK_F1, ftagall, {.v = "1"} },
+	{ MODKEY|ShiftMask|ControlMask,	XK_F2, ftagall, {.v = "2"} },
+	{ MODKEY|ShiftMask|ControlMask,	XK_F3, ftagall, {.v = "3"} },
+	{ MODKEY|ShiftMask|ControlMask,	XK_F4, ftagall, {.v = "4"} },
+	{ MODKEY|ShiftMask|ControlMask,	XK_F5, ftagall, {.v = "5"} },
+	{ MODKEY|ShiftMask|ControlMask,	XK_F6, ftagall, {.v = "6"} },
+	{ MODKEY|ShiftMask|ControlMask,	XK_F7, ftagall, {.v = "7"} },
+	{ MODKEY|ShiftMask|ControlMask,	XK_F8, ftagall, {.v = "8"} },
+	{ MODKEY|ShiftMask|ControlMask,	XK_F9, ftagall, {.v = "9"} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
