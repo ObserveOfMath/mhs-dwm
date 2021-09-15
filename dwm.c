@@ -374,6 +374,8 @@ tagall(const Arg *arg) {
 		ui = ui >> 1;
 		tag++;
 	}
+	// debug
+	// running = 0; // If I hit this, it means the loop above breaks. *NOTE(mh): It does :)
 
 	int j;
 	Client* c;
@@ -390,9 +392,8 @@ tagall(const Arg *arg) {
 			}
 		}
 	/*NOTE(mh): For fuck's sake*/
-	view((Arg *)arg);
 	arrange(selmon);
-
+	view((Arg *)arg);
 }
 
 void
