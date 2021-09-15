@@ -259,6 +259,8 @@ static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
+/*TODO(mh): Delete this after*/
+static void focusonview(Client *c);
 
 /* variables */
 static const char broken[] = "broken";
@@ -345,7 +347,12 @@ grabtag(const Arg *arg) {
 			}
 		}
 	arrange(selmon);
+	focus(c);
 }
+
+/*NOTE(mh): Purely for debugging function*/
+void
+focusonview(Client *c) {}
 
 /*NOTE(mh): Added from a weird diff file*/
 void
@@ -2312,7 +2319,11 @@ updatewmhints(Client *c)
 	}
 }
 
-/*NOTE(mh): Added from diff*/
+/*NOTE(mh): Added from diff
+(pc) Original  @  /mnt/hdd/backup/dwm-original
+(vm) Original  @  /home/mh/mhs-dwm-original
+*/
+
 void
 view(const Arg *arg)
 {
@@ -2338,6 +2349,7 @@ view(const Arg *arg)
 		selmon->pertag->prevtag = selmon->pertag->curtag;
 		selmon->pertag->curtag = tmptag;
 	}
+
 
 	selmon->nmaster = selmon->pertag->nmasters[selmon->pertag->curtag];
 	selmon->mfact = selmon->pertag->mfacts[selmon->pertag->curtag];
