@@ -8,8 +8,11 @@ My patched version of the suckless dynamic window manager (dwm)
 		- pertags
 		- ewmhs support for wmctrl & xdotool
 		- colorbar
-		- center on float (no fkin clue the real name)
-		- my patch
+		- floatcenter
+		- alttagsdecor
+		- my patches
+			- sendall	(send and focus)
+			- graball	(focus and send)
 	Current changes to dwm.c/config.h:
 		- DMT12345B
 		- cmd				=> kitty
