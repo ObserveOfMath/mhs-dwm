@@ -150,6 +150,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	/*NOTE(mh): Kill all visible clients*/
+	{ MODKEY|ShiftMask,             XK_x,      killall,        {0} },
 };
 
 /* button definitions */
