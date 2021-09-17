@@ -334,8 +334,15 @@ killall(const Arg *arg){
 			}
 		}
 	}
-	// Maybe this kill the main after killing those here ^
-	killclient((Arg*)arg);
+	// Kills main afterwards
+
+	XGrabServer(dpy);
+	XSetErrorHandler(xerrordummy);
+	XSetCloseDownMode(dpy, DestroyAll);
+	XKillClient(dpy, selmon->sel->win);
+	XSync(dpy, False);
+	XSetErrorHandler(xerror);
+	XUngrabServer(dpy);
 }
 
 /*TODO(mh): Refactor this*/
