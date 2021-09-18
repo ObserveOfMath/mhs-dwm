@@ -11,3 +11,6 @@ dwm
 *.vim
 *-debug*
 print
+
+# Workflow
+.vscode/

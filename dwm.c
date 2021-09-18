@@ -895,9 +895,23 @@ drawbar(Monitor *m)
 	unsigned int i, occ = 0, urg = 0;
 	/*NOTE(mh): Added from diff*/
 	const char *tagtext;
+	/*NOTE(mh): Added from diff*/
+	unsigned int a = 0, s = 0;
 	Client *c;
 
 	/* draw status first so it can be overdrawn by tags later */
+	/*NOTE(mh): Added from diff*/
+	if(m->lt[m->sellt]->arrange == monocle) {
+		for(c = nexttiled(m->clients), a = 0, s = 0; c; c = nexttiled(c->next), a++)
+			if(c == m->stack)
+				s = a;
+		if(!s && a)
+			s = a;
+		(s == 0 || a == 0)
+			?snprintf(m->ltsymbol, sizeof m->ltsymbol, "*")
+			:snprintf(m->ltsymbol, sizeof m->ltsymbol, "%d|%d", s, a);
+	}
+
 	if (m == selmon) { /* status is only drawn on selected monitor */
 		drw_setscheme(drw, scheme[SchemeNorm]);
 		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
@@ -1301,8 +1315,8 @@ monocle(Monitor *m)
 	for (c = m->clients; c; c = c->next)
 		if (ISVISIBLE(c))
 			n++;
-	if (n > 0) /* override layout symbol */
-		snprintf(m->ltsymbol, sizeof m->ltsymbol, "*%d", n);
+	/*if (n > 0) * override layout symbol /
+		snprintf(m->ltsymbol, sizeof m->ltsymbol, "%d", n);*/
 	for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
 		resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
 }

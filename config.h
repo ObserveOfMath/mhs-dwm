@@ -9,10 +9,13 @@ static const unsigned int snap      = 2;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 /*NOTE(mh): Added from diff*/
+static const int vertpad            = 3;
+static const int sidepad            = 3;
+/*NOTE(mh): Added from diff*/
 static const int focusonwheel				= 0;
 static const char *fonts[]          = { "Source Code Pro:size=12:antialias=true", "monospace:size=12" };
 static const char dmenufont[]       =		"Source Code Pro:size=12:antialias=true";
-/* NOTE(mh): Chaging colors -/+ */
+/*NOTE(mh): Chaging colors -/+*/
 static const char col_black[]       	= "#222222";
 static const char col_gray[]        	= "#444444";
 static const char col_gray_light[]  	= "#bbbbbb";
