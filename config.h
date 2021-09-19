@@ -9,7 +9,7 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const int vertpad            = 5;
 static const int sidepad            = 5;
 /*NOTE(mh): Added from diff (fullgaps)*/
-static const int gappx              = 5;
+static const unsigned int gappx     = 5;
 /*NOTE(mh): Added from diff*/
 static const int focusonwheel				= 0;
 static const char *fonts[]          = { "Source Code Pro:size=12:antialias=true", "monospace:size=12" };

@@ -130,7 +130,7 @@ struct Monitor {
 	int mx, my, mw, mh;   /* screen size */
 	int wx, wy, ww, wh;   /* window area  */
 	/*NOTE(mh): you know why*/
-	//int gappx;            /* gaps between windows */
+	unsigned int gappx;   /* gaps between windows */
 	unsigned int seltags;
 	unsigned int sellt;
 	unsigned int tagset[2];
@@ -820,9 +820,8 @@ createmon(void)
 	m->nmaster = nmaster;
 	m->showbar = showbar;
 	m->topbar = topbar;
-
 	// NOTE(mh): Dear Matthew, fuck you
-	// m->gappx = gappx;
+	m->gappx = gappx;
 	// m->gappx = 5;*NOTE(mh): Dear Matthew, double fuck you
 	m->lt[0] = &layouts[0];
 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
@@ -1990,6 +1989,9 @@ tagmon(const Arg *arg)
 }
 
 /*NOTE(mh): Change this back if changed*/
+/*NOTE.IMPORTANT(mh): This seems to be in conflict with `barpadding`
+ *	Original @ earlier commit || vm-dwm-original
+*/
 void
 tile(Monitor *m)
 {
@@ -2003,28 +2005,28 @@ tile(Monitor *m)
 	if (n > m->nmaster)
 		mw = m->nmaster ? m->ww * m->mfact : 0;
 	else
-		//mw = m->ww - m->gappx;
-	//for (i = 0, my = ty = m->gappx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
-		mw = m->ww;
-	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
+		mw = m->ww - m->gappx;
+	for (i = 0, my = ty = m->gappx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
+//		mw = m->ww;
+//	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if (i < m->nmaster) {
-		//	h = (m->wh - my) / (MIN(n, m->nmaster) - i) - m->gappx;
-		//	resize(c, m->wx + m->gappx, m->wy + my, mw - (2*c->bw) - m->gappx, h - (2*c->bw), 0);
-		//	if (my + HEIGHT(c) + m->gappx < m->wh)
-		//		my += HEIGHT(c) + m->gappx;
-			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
-			resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0);
-			if (my + HEIGHT(c) < m->wh)
-				my += HEIGHT(c);
+			h = (m->wh - my) / (MIN(n, m->nmaster) - i) - m->gappx;
+			resize(c, m->wx + m->gappx, m->wy + my, mw - (2*c->bw) - m->gappx, h - (2*c->bw), 0);
+			if (my + HEIGHT(c) + m->gappx < m->wh)
+				my += HEIGHT(c) + m->gappx;
+		//	h = (m->wh - my) / (MIN(n, m->nmaster) - i);
+		//	resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0);
+		//	if (my + HEIGHT(c) < m->wh)
+		//		my += HEIGHT(c);
 		} else {
-			//h = (m->wh - ty) / (n - i) - m->gappx;
-			//resize(c, m->wx + mw + m->gappx, m->wy + ty, m->ww - mw - (2*c->bw) - 2*m->gappx, h - (2*c->bw), 0);
-			//if (ty + HEIGHT(c) + m->gappx < m->wh)
-			//	ty += HEIGHT(c) + m->gappx;
-			h = (m->wh - ty) / (n - i);
-			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
-			if (ty + HEIGHT(c) < m->wh)
-				ty += HEIGHT(c);
+			h = (m->wh - ty) / (n - i) - m->gappx;
+			resize(c, m->wx + mw + m->gappx, m->wy + ty, m->ww - mw - (2*c->bw) - 2*m->gappx, h - (2*c->bw), 0);
+			if (ty + HEIGHT(c) + m->gappx < m->wh)
+				ty += HEIGHT(c) + m->gappx;
+			// h = (m->wh - ty) / (n - i);
+			// resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
+			// if (ty + HEIGHT(c) < m->wh)
+			// 	ty += HEIGHT(c);
 		}
 }
 
