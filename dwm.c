@@ -962,7 +962,7 @@ drawbar(Monitor *m)
 			tlpad = MAX((m->ww - ((int)TEXTW(m->sel->name) - lrpad)) / 2 - x, lrpad / 2);
 			/*NOTE(mh): Added from diff*/
 			//drw_text(drw, x, 0, w, bh, tlpad, m->sel->name, 0);
-			drw_text(drw, x, 0, w - 2 * sp, bh, lrpad / 2, m->sel->name, 0);
+			drw_text(drw, x, 0, w - 2 * sp, bh, tlpad, m->sel->name, 0);
 			if (m->sel->isfloating)
 				drw_rect(drw, x + boxs + tlpad - lrpad / 2, boxs,
 					boxw, boxw, m->sel->isfixed, 0);
@@ -1333,7 +1333,12 @@ monocle(Monitor *m)
 	/*if (n > 0) * override layout symbol /
 		snprintf(m->ltsymbol, sizeof m->ltsymbol, "%d", n);*/
 	for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
-		resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
+		/*NOTE(mh): Hoping this works*/
+		//resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
+		resize(c,
+				   m->wx + m->gappx, m->wy + m->gappx,
+				   m->ww - 2 * (c->bw + m->gappx), m->wh - 2 * (c->bw + m->gappx),
+					 0);
 }
 
 /*NOTE(mh): See original*/
