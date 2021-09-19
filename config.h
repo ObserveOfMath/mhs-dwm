@@ -3,14 +3,13 @@
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 2;       /* snap pixel */
-/* static const unsigned int snap   = 32;       * snap pixel
- * NOTE(mh): I think this has to do with the snapping of windows in floating mode (which is extremely annoying sometimes) thus I've reduced it
-*/
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 /*NOTE(mh): Added from diff (barpadding)*/
 static const int vertpad            = 5;
 static const int sidepad            = 5;
+/*NOTE(mh): Added from diff (fullgaps)*/
+static const int gappx              = 5;
 /*NOTE(mh): Added from diff*/
 static const int focusonwheel				= 0;
 static const char *fonts[]          = { "Source Code Pro:size=12:antialias=true", "monospace:size=12" };

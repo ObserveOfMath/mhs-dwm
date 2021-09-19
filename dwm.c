@@ -1591,6 +1591,8 @@ run(void)
 	XEvent ev;
 	/* main event loop */
 	XSync(dpy, False);
+	/*NOTE(mh): This is risky, but I think it fixes shit*/
+	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx + sp, selmon->by + vp, selmon->ww - 2 * sp, bh);
 	while (running && !XNextEvent(dpy, &ev))
 		if (handler[ev.type])
 			handler[ev.type](&ev); /* call handler */
