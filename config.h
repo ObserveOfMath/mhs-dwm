@@ -8,9 +8,9 @@ static const unsigned int snap      = 2;       /* snap pixel */
 */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-/*NOTE(mh): Added from diff*/
-static const int vertpad            = 3;
-static const int sidepad            = 3;
+/*NOTE(mh): Added from diff (barpadding)*/
+static const int vertpad            = 5;
+static const int sidepad            = 5;
 /*NOTE(mh): Added from diff*/
 static const int focusonwheel				= 0;
 static const char *fonts[]          = { "Source Code Pro:size=12:antialias=true", "monospace:size=12" };
@@ -63,7 +63,9 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod4Mask
+/*NOTE(mh): Changed this for debugging purposes, chage this back when finished*/
+//#define MODKEY Mod4Mask
+#define MODKEY Mod1Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
