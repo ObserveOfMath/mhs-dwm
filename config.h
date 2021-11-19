@@ -12,8 +12,7 @@ static const int sidepad            = 5;
 static const unsigned int gappx     = 5;
 /*NOTE(mh): Added from diff*/
 static const int focusonwheel				= 0;
-static const char *fonts[]          = { "Source Code Pro:size=12:antialias=true", "monospace:size=12" };
-static const char dmenufont[]       =		"Source Code Pro:size=12:antialias=true";
+static const char *fonts[]          = { "JetBrains Mono:size=12:antialias=true", "monospace:size=12" };
 /*NOTE(mh): Chaging colors -/+*/
 static const char col_black[]       	= "#222222";
 static const char col_gray[]        	= "#444444";
@@ -35,8 +34,8 @@ static const char *colors[][3]      	= {
 
 /* tagging */
 // static const char *ontags[] = { ... };
-static const char *alttags[] = { "•", "•", "•", "•", "•", "•", "•", "•", "•" };
-static const char *tags[] = { "◦", "◦", "◦", "◦", "◦", "◦", "◦", "◦", "◦" };
+static const char *alttags[] = { "•", "•", "•", "•" };
+static const char *tags[] = { "◦", "◦", "◦", "◦" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -118,41 +117,41 @@ static Key keys[] = {
 	{ MODKEY,							XK_F2,		 tagall,		 { .ui = 1 << 1 } }, // 2
 	{ MODKEY,							XK_F3,		 tagall,		 { .ui = 1 << 2 } }, // 4
 	{ MODKEY,							XK_F4,		 tagall,		 { .ui = 1 << 3 } }, // 8
-	{ MODKEY,							XK_F5,		 tagall,		 { .ui = 1 << 4 } }, // 16
-	{ MODKEY,							XK_F6,		 tagall,		 { .ui = 1 << 5 } }, // 32
-	{ MODKEY,							XK_F7,		 tagall,		 { .ui = 1 << 6 } }, // 64
-	{ MODKEY,							XK_F8,		 tagall,		 { .ui = 1 << 7 } }, // 128
-	{ MODKEY,							XK_F9,		 tagall,		 { .ui = 1 << 8 } }, // 256
+	//{ MODKEY,							XK_F5,		 tagall,		 { .ui = 1 << 4 } }, // 16
+	//{ MODKEY,							XK_F6,		 tagall,		 { .ui = 1 << 5 } }, // 32
+	//{ MODKEY,							XK_F7,		 tagall,		 { .ui = 1 << 6 } }, // 64
+	//{ MODKEY,							XK_F8,		 tagall,		 { .ui = 1 << 7 } }, // 128
+	//{ MODKEY,							XK_F9,		 tagall,		 { .ui = 1 << 8 } }, // 256
 	/*NOTE(mh): sendall patch .wit*/
 	{ MODKEY|ShiftMask,		XK_F1,		sendall,		 { .ui = 1 << 0} },
 	{ MODKEY|ShiftMask,		XK_F2,		sendall,		 { .ui = 1 << 1} },
 	{ MODKEY|ShiftMask,		XK_F3,		sendall,		 { .ui = 1 << 2} },
 	{ MODKEY|ShiftMask,		XK_F4,		sendall,		 { .ui = 1 << 3} },
-	{ MODKEY|ShiftMask,		XK_F5,		sendall,		 { .ui = 1 << 4} },
-	{ MODKEY|ShiftMask,		XK_F6,		sendall,		 { .ui = 1 << 5} },
-	{ MODKEY|ShiftMask,		XK_F7,		sendall,		 { .ui = 1 << 6} },
-	{ MODKEY|ShiftMask,		XK_F8,		sendall,		 { .ui = 1 << 7} },
-	{ MODKEY|ShiftMask,		XK_F9,		sendall,		 { .ui = 1 << 8} },
+	//{ MODKEY|ShiftMask,		XK_F5,		sendall,		 { .ui = 1 << 4} },
+	//{ MODKEY|ShiftMask,		XK_F6,		sendall,		 { .ui = 1 << 5} },
+	//{ MODKEY|ShiftMask,		XK_F7,		sendall,		 { .ui = 1 << 6} },
+	//{ MODKEY|ShiftMask,		XK_F8,		sendall,		 { .ui = 1 << 7} },
+	//{ MODKEY|ShiftMask,		XK_F9,		sendall,		 { .ui = 1 << 8} },
 	/*NOTE(mh): graball patch .wit*/
 	/*NOTE(mh): Debuging this, change this to ControlMask later*/
 	{ MODKEY|ControlMask,	XK_F1,	 	grabtag,		 { .v = "1" } },
 	{ MODKEY|ControlMask,	XK_F2,		grabtag,		 { .v = "2" } },
 	{ MODKEY|ControlMask,	XK_F3,		grabtag,		 { .v = "3" } },
 	{ MODKEY|ControlMask,	XK_F4,		grabtag,		 { .v = "4" } },
-	{ MODKEY|ControlMask,	XK_F5,		grabtag,		 { .v = "5" } },
-	{ MODKEY|ControlMask,	XK_F6,		grabtag,		 { .v = "6" } },
-	{ MODKEY|ControlMask,	XK_F7,		grabtag,		 { .v = "7" } },
-	{ MODKEY|ControlMask,	XK_F8,		grabtag,		 { .v = "8" } },
-	{ MODKEY|ControlMask,	XK_F9,		grabtag,		 { .v = "9" } },
+	//{ MODKEY|ControlMask,	XK_F5,		grabtag,		 { .v = "5" } },
+	//{ MODKEY|ControlMask,	XK_F6,		grabtag,		 { .v = "6" } },
+	//{ MODKEY|ControlMask,	XK_F7,		grabtag,		 { .v = "7" } },
+	//{ MODKEY|ControlMask,	XK_F8,		grabtag,		 { .v = "8" } },
+	//{ MODKEY|ControlMask,	XK_F9,		grabtag,		 { .v = "9" } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
 	TAGKEYS(                        XK_4,                      3)
-	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
+	//TAGKEYS(                        XK_5,                      4)
+	//TAGKEYS(                        XK_6,                      5)
+	//TAGKEYS(                        XK_7,                      6)
+	//TAGKEYS(                        XK_8,                      7)
+	//TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	/*NOTE(mh): Kill all visible clients*/
 	{ MODKEY|ShiftMask,             XK_x,      killall,        {0} },
