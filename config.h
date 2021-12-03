@@ -18,10 +18,10 @@ static const char col_black[]       	= "#222222";
 static const char col_gray[]        	= "#444444";
 static const char col_gray_light[]  	= "#bbbbbb";
 static const char col_white[]       	= "#eeeeee";
-static const char col_manjaro_dark[]	= "#1b2224";
-static const char col_manjaro_light[]	= "#2f4048";
-static const char col_manjaro_light2[]= "#8eb4be";
-static const char col_manjaro_light3[]= "#5c818a";
+static const char col_manjaro_dark[]	= "#1a1a1a";
+static const char col_manjaro_light[]	= "#303030";
+static const char col_manjaro_light2[]= "#d3d3d3";
+static const char col_manjaro_light3[]= "#8a8a8a";
 static const char *colors[][3]      	= {
 	/*               fg         bg         					border   */
 	[SchemeNorm] = { col_white, col_manjaro_light, 	col_gray 	},					// for active
@@ -79,13 +79,15 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 /* static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 * NOTE(mh): Commented to patch another command launcher */
 static const char *dmenucmd[] = { "rofi", "-show", "run", NULL};
-static const char *termcmd[]  = { "kitty", NULL };
+static const char *kittytmux[]  = { "kitty", "tmux", "new" , "-A", NULL };
+static const char *kitty[]      = { "kitty", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	/* Mod                          Keysym     *func           Arg      */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = kittytmux } },
+	{ MODKEY|ShiftMask|ControlMask, XK_Return, spawn,          {.v = kitty } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -164,7 +166,7 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button2,        spawn,          {.v = kittytmux } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
