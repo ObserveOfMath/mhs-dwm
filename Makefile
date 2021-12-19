@@ -36,7 +36,7 @@ uninstall:
 
 install: all
 	chmod 755 dwm
-	mv dwm /usr/local/bin/dwm
+	mv dwm /home/mh/Source/dwm
 	
 local: all
 	chmod 755 dwm

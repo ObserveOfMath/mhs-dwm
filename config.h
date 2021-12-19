@@ -81,11 +81,13 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "rofi", "-show", "run", NULL};
 static const char *kittytmux[]  = { "kitty", "tmux", "new" , "-A", NULL };
 static const char *kitty[]      = { "kitty", NULL };
+static const char* clipmenu[]   = { "clipmenu", "-i", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	/* Mod                          Keysym     *func           Arg      */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_c,      spawn,          {.v = clipmenu } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = kittytmux } },
 	{ MODKEY|ShiftMask|ControlMask, XK_Return, spawn,          {.v = kitty } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
