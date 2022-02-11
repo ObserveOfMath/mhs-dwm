@@ -5,6 +5,8 @@
 # Specific
 *.png
 dwm
+*.tar
+tags
 
 # VM analysis
 *-an*
