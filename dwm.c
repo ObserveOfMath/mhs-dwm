@@ -221,7 +221,7 @@ static void setcurrentdesktop(void);
 static void setdesktopnames(void);
 static void setfocus(Client *c);
 static void setfullscreen(Client *c, int fullscreen);
-//static void setgaps(const Arg *arg); *NOTE(mh): same reason
+static void setgaps(const Arg *arg);
 static void setlayout(const Arg *arg);
 static void setmfact(const Arg *arg);
 /*NOTE(mh): Added from diff*/
@@ -265,6 +265,7 @@ static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
+static void swapbarpos(void);
 
 /* variables */
 static const char broken[] = "broken";
@@ -1739,7 +1740,7 @@ setfullscreen(Client *c, int fullscreen)
 	}
 }
 
-/*void
+void
 setgaps(const Arg *arg)
 {
 	if ((arg->i == 0) || (selmon->gappx + arg->i < 0))
@@ -1747,7 +1748,7 @@ setgaps(const Arg *arg)
 	else
 		selmon->gappx += arg->i;
 	arrange(selmon);
-}*/
+}
 
 /*NOTE(mh): Added from diff*/
 void
@@ -1802,7 +1803,8 @@ setup(void)
 	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
 		die("no fonts could be loaded.");
 	lrpad = drw->fonts->h;
-	bh = drw->fonts->h + 2;
+	// bh = drw->fonts->h + 2;
+	bh = custom_bh;
 	updategeom();
 	/*NOTE(mh): Added from diff*/
 	sp = sidepad;
@@ -2233,7 +2235,7 @@ updateclientlist()
 void updatecurrentdesktop(void){
 	long rawdata[] = { selmon->tagset[selmon->seltags] };
 	int i=0;
-	while(*rawdata >> i+1){
+	while(*rawdata >> (i+1)){
 		i++;
 	}
 	long data[] = { i };
@@ -2550,6 +2552,14 @@ zoom(const Arg *arg)
 		if (!c || !(c = nexttiled(c->next)))
 			return;
 	pop(c);
+}
+
+void
+swapbarpos(void) {
+	selmon->topbar = selmon->topbar? 0: 1;
+	updatebarpos(selmon);
+	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx + sp, selmon->by + vp, selmon->ww - 2 * sp, bh);
+	arrange(selmon);
 }
 
 int

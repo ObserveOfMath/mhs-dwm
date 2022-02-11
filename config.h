@@ -3,17 +3,17 @@
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 2;       /* snap pixel */
+static const int custom_bh          = 28;
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 /*NOTE(mh): Added from diff (barpadding)*/
-static const int vertpad            = 5;
-static const int sidepad            = 5;
+static const int vertpad            = 0;
+static const int sidepad            = 0;
 /*NOTE(mh): Added from diff (fullgaps)*/
-static const unsigned int gappx     = 5;
+static const unsigned int gappx     = 10;
 /*NOTE(mh): Added from diff*/
 static const int focusonwheel				= 0;
-static const char *fonts[]          = { "JetBrains Mono:size=12:antialias=true", "monospace:size=12" };
-/*NOTE(mh): Chaging colors -/+*/
+static const char *fonts[]          = { "JetBrains Mono:size=14:antialias=true", "monospace:size=14" }; /*NOTE(mh): Chaging colors -/+*/
 static const char col_black[]       	= "#222222";
 static const char col_gray[]        	= "#444444";
 static const char col_gray_light[]  	= "#bbbbbb";
@@ -55,9 +55,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "X",      tile },    /* first entry is default */
-	{ "O",      NULL },    /* no layout function means floating behavior */
-	{ "*",      monocle },
+	{ "[T]",      tile },    /* first entry is default */
+	{ "[F]",      NULL },    /* no layout function means floating behavior */
+	{ "[M]",      monocle },
 };
 
 /* key definitions */
@@ -79,8 +79,8 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 /* static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 * NOTE(mh): Commented to patch another command launcher */
 static const char *dmenucmd[] = { "rofi", "-show", "run", NULL};
-static const char *kittytmux[]  = { "kitty", "tmux", "new" , "-A", NULL };
-static const char *kitty[]      = { "kitty", NULL };
+static const char *tmuxterm[]  = { "alacritty", "--command", "tmux", "new" , "-A", NULL };
+static const char *term[]      = { "alacritty", NULL };
 static const char* clipmenu[]   = { "clipmenu", "-i", NULL };
 
 static Key keys[] = {
@@ -88,11 +88,14 @@ static Key keys[] = {
 	/* Mod                          Keysym     *func           Arg      */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_c,      spawn,          {.v = clipmenu } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = kittytmux } },
-	{ MODKEY|ShiftMask|ControlMask, XK_Return, spawn,          {.v = kitty } },
+	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = tmuxterm } },
+	{ MODKEY|ShiftMask|ControlMask, XK_Return, spawn,          {.v = term } },
+	{ MODKEY,                       XK_s,      swapbarpos,     {0} },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_p,      setgaps,        {.i = +5 } },
+	{ MODKEY|ShiftMask,             XK_m,      setgaps,        {.i = -5 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
@@ -121,41 +124,18 @@ static Key keys[] = {
 	{ MODKEY,							XK_F2,		 tagall,		 { .ui = 1 << 1 } }, // 2
 	{ MODKEY,							XK_F3,		 tagall,		 { .ui = 1 << 2 } }, // 4
 	{ MODKEY,							XK_F4,		 tagall,		 { .ui = 1 << 3 } }, // 8
-	//{ MODKEY,							XK_F5,		 tagall,		 { .ui = 1 << 4 } }, // 16
-	//{ MODKEY,							XK_F6,		 tagall,		 { .ui = 1 << 5 } }, // 32
-	//{ MODKEY,							XK_F7,		 tagall,		 { .ui = 1 << 6 } }, // 64
-	//{ MODKEY,							XK_F8,		 tagall,		 { .ui = 1 << 7 } }, // 128
-	//{ MODKEY,							XK_F9,		 tagall,		 { .ui = 1 << 8 } }, // 256
-	/*NOTE(mh): sendall patch .wit*/
 	{ MODKEY|ShiftMask,		XK_F1,		sendall,		 { .ui = 1 << 0} },
 	{ MODKEY|ShiftMask,		XK_F2,		sendall,		 { .ui = 1 << 1} },
 	{ MODKEY|ShiftMask,		XK_F3,		sendall,		 { .ui = 1 << 2} },
 	{ MODKEY|ShiftMask,		XK_F4,		sendall,		 { .ui = 1 << 3} },
-	//{ MODKEY|ShiftMask,		XK_F5,		sendall,		 { .ui = 1 << 4} },
-	//{ MODKEY|ShiftMask,		XK_F6,		sendall,		 { .ui = 1 << 5} },
-	//{ MODKEY|ShiftMask,		XK_F7,		sendall,		 { .ui = 1 << 6} },
-	//{ MODKEY|ShiftMask,		XK_F8,		sendall,		 { .ui = 1 << 7} },
-	//{ MODKEY|ShiftMask,		XK_F9,		sendall,		 { .ui = 1 << 8} },
-	/*NOTE(mh): graball patch .wit*/
-	/*NOTE(mh): Debuging this, change this to ControlMask later*/
 	{ MODKEY|ControlMask,	XK_F1,	 	grabtag,		 { .v = "1" } },
 	{ MODKEY|ControlMask,	XK_F2,		grabtag,		 { .v = "2" } },
 	{ MODKEY|ControlMask,	XK_F3,		grabtag,		 { .v = "3" } },
 	{ MODKEY|ControlMask,	XK_F4,		grabtag,		 { .v = "4" } },
-	//{ MODKEY|ControlMask,	XK_F5,		grabtag,		 { .v = "5" } },
-	//{ MODKEY|ControlMask,	XK_F6,		grabtag,		 { .v = "6" } },
-	//{ MODKEY|ControlMask,	XK_F7,		grabtag,		 { .v = "7" } },
-	//{ MODKEY|ControlMask,	XK_F8,		grabtag,		 { .v = "8" } },
-	//{ MODKEY|ControlMask,	XK_F9,		grabtag,		 { .v = "9" } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
 	TAGKEYS(                        XK_4,                      3)
-	//TAGKEYS(                        XK_5,                      4)
-	//TAGKEYS(                        XK_6,                      5)
-	//TAGKEYS(                        XK_7,                      6)
-	//TAGKEYS(                        XK_8,                      7)
-	//TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	/*NOTE(mh): Kill all visible clients*/
 	{ MODKEY|ShiftMask,             XK_x,      killall,        {0} },
@@ -168,7 +148,7 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = kittytmux } },
+	{ ClkStatusText,        0,              Button2,        spawn,          {.v = tmuxterm } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
