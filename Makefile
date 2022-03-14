@@ -27,6 +27,7 @@ config.h:
 
 dwm: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
+	cp dwm /home/mh/Source/bin/dwm
 
 clean:
 	rm -f dwm ${OBJ}

@@ -59,14 +59,12 @@
 #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
 #define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
 #define TAGMASK                 ((1 << LENGTH(tags)) - 1)
-/*NOTE(mh): Added from diff*/
 #define TAGSLENGTH							(LENGTH(tags))
 #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
 
 /* enums */
 enum { CurResizeBR, CurResizeBL, CurResizeTR, CurResizeTL, CurNormal, CurMove, CurLast }; /* cursor */
 enum { SchemeNorm, SchemeSel, SchemeTagsSel, SchemeTagsNorm }; /* color schemes */
-/*NOTE(mh): Added from diff*/
 enum { NetSupported, NetWMName, NetWMState, NetWMDesktop, NetWMCheck,
        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
        NetWMWindowTypeDialog, NetClientList, NetDesktopNames, NetDesktopViewport, NetNumberOfDesktops, NetCurrentDesktop, NetLast }; /* EWMH atoms */
@@ -98,7 +96,7 @@ struct Client {
 	int oldx, oldy, oldw, oldh;
 	int basew, baseh, incw, inch, maxw, maxh, minw, minh;
 	int bw, oldbw;
-	unsigned int tags; //*NOTE(mh): I'm assuming this is equal to 8?
+	unsigned int tags;
 	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
 	Client *next;
 	Client *snext;
@@ -118,7 +116,6 @@ typedef struct {
 	void (*arrange)(Monitor *);
 } Layout;
 
-/*NOTE(mh): Added from diff*/
 typedef struct Pertag Pertag;
 
 struct Monitor {
@@ -129,7 +126,6 @@ struct Monitor {
 	int by;               /* bar geometry */
 	int mx, my, mw, mh;   /* screen size */
 	int wx, wy, ww, wh;   /* window area  */
-	/*NOTE(mh): you know why*/
 	unsigned int gappx;   /* gaps between windows */
 	unsigned int seltags;
 	unsigned int sellt;
@@ -142,7 +138,7 @@ struct Monitor {
 	Monitor *next;
 	Window barwin;
 	const Layout *lt[2];
-	Pertag *pertag; //*NOTE(mh): Added from `pertag` diff
+	Pertag *pertag;
 };
 
 typedef struct {
@@ -176,7 +172,6 @@ static void detachstack(Client *c);
 static Monitor *dirtomon(int dir);
 static void drawbar(Monitor *m);
 static void drawbars(void);
-//*NOTE(mh): Added from diff {
 //static void enternotify(XEvent *e);
 static void expose(XEvent *e);
 static void focus(Client *c);
@@ -216,7 +211,6 @@ static void sendall(const Arg *arg);
 static int sendevent(Client *c, Atom proto);
 static void sendmon(Client *c, Monitor *m);
 static void setclientstate(Client *c, long state);
-/*NOTE(mh): Added from diff (2)*/
 static void setcurrentdesktop(void);
 static void setdesktopnames(void);
 static void setfocus(Client *c);
@@ -224,19 +218,16 @@ static void setfullscreen(Client *c, int fullscreen);
 static void setgaps(const Arg *arg);
 static void setlayout(const Arg *arg);
 static void setmfact(const Arg *arg);
-/*NOTE(mh): Added from diff*/
 static void setnumdesktops(void);
 static void setup(void);
-/*NOTE(mh): Added from diff*/
 static void setviewport(void);
 static void seturgent(Client *c, int urg);
-/*NOTE(mh): Added from diff*/
 static void shiftviewclients(const Arg *arg);
 static void showhide(Client *c);
 static void sigchld(int unused);
 static void spawn(const Arg *arg);
 static void tag(const Arg *arg);
-static void tagall(const Arg *arg); /*NOTE(mh): Applied from diff*/
+static void tagall(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void tile(Monitor *);
 static void togglebar(const Arg *arg);
@@ -246,7 +237,6 @@ static void toggleview(const Arg *arg);
 static void unfocus(Client *c, int setfocus);
 static void unmanage(Client *c, int destroyed);
 static void unmapnotify(XEvent *e);
-/*NOTE(mh): Added from diff*/
 static void updatecurrentdesktop(void);
 static void updatebarpos(Monitor *m);
 static void updatebars(void);
@@ -273,7 +263,6 @@ static char stext[256];
 static int screen;
 static int sw, sh;           /* X display screen geometry width, height */
 static int bh, blw = 0;      /* bar geometry */
-/*NOTE(mh): Added from diff(2)(barpadding)*/
 static int vp;
 static int sp;
 static int lrpad;            /* sum of left and right padding for text */
@@ -307,7 +296,6 @@ static Window root, wmcheckwin;
 /* configuration, allows nested code to access above variables */
 #include "config.h"
 
-/*NOTE(mh): Added from diff*/
 struct Pertag {
 	unsigned int curtag, prevtag; /* current and previous tag */
 	int nmasters[LENGTH(tags) + 1]; /* number of windows in master area */
@@ -322,7 +310,6 @@ struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
 
 /* function implementations */
 
-/*NOTE(mh): This is a modified version of `killunsel` to really kill all windows*/
 void
 killall(const Arg *arg){
 	Client *i = NULL;
@@ -354,10 +341,8 @@ killall(const Arg *arg){
 	XUngrabServer(dpy);
 }
 
-/*TODO(mh): Refactor this*/
 void
 sendall(const Arg *arg){
-	/*NOTE(mh): Sending to the appropiate tag */
 	if (selmon->sel && arg->ui & TAGMASK) {
 		selmon->sel->tags = arg->ui & TAGMASK;
 
@@ -370,7 +355,6 @@ sendall(const Arg *arg){
 	view((Arg *)arg);
 }
 
-/*TODO(mh): Refactor (more like begin lol) this*/
 void
 grabtag(const Arg *arg) {
 
@@ -398,10 +382,8 @@ grabtag(const Arg *arg) {
 	focus(c);
 }
 
-/*NOTE(mh): Added from a weird diff file*/
 void
 tagall(const Arg *arg) {
-	/*NOTE(mh): This will have arg->ui*/
 
 	if (!selmon->clients)
 		return;
@@ -415,8 +397,6 @@ tagall(const Arg *arg) {
 		ui = ui >> 1;
 		tag++;
 	}
-	// debug
-	// running = 0; // If I hit this, it means the loop above breaks. *NOTE(mh): It does :)
 
 	int j;
 	Client* c;
@@ -432,7 +412,6 @@ tagall(const Arg *arg) {
 				}
 			}
 		}
-	/*NOTE(mh): For fuck's sake*/
 	arrange(selmon);
 	view((Arg *)arg);
 }
@@ -578,7 +557,6 @@ attachstack(Client *c)
 void
 buttonpress(XEvent *e)
 {
-	/*NOTE(mh): Added from diff*/
 	//unsigned int i, x, click;
 	unsigned int i, x, click, occ;
 	Arg arg = {0};
@@ -588,7 +566,6 @@ buttonpress(XEvent *e)
 
 	click = ClkRootWin;
 	/* focus monitor if necessary */
-	/*NOTE(mh): Added from diff*/
 	// if ((m = wintomon(ev->window)) && m != selmon) {
 	if ((m = wintomon(ev->window)) && m != selmon
 	    && (focusonwheel || (ev->button != Button4 && ev->button != Button5))) {
@@ -597,13 +574,11 @@ buttonpress(XEvent *e)
 		focus(NULL);
 	}
 	if (ev->window == selmon->barwin) {
-		/*NOTE(mh): Added from diff*/
 		//i = x = 0;
 		i = x = occ = 0;
 		for (c = m->clients; c; c = c->next)
 			occ |= c->tags;
 		do
-			/*NOTE(mh): Added from diff*/
 			//x += TEXTW(tags[i]);
 			x += TEXTW(occ & 1 << i ? alttags[i] : tags[i]);
 		while (ev->x >= x && ++i < LENGTH(tags));
@@ -617,7 +592,6 @@ buttonpress(XEvent *e)
 		else
 			click = ClkWinTitle;
 	} else if ((c = wintoclient(ev->window))) {
-		/*NOTE(mh): Added from diff*/
 		//focus(c);
 		//restack(selmon);
 		if (focusonwheel || (ev->button != Button4 && ev->button != Button5))
@@ -746,7 +720,6 @@ configurenotify(XEvent *e)
 				for (c = m->clients; c; c = c->next)
 					if (c->isfullscreen)
 						resizeclient(c, m->mx, m->my, m->mw, m->mh);
-				/*NOTE(mh): Addedfrom diff*/
 				//XMoveResizeWindow(dpy, m->barwin, m->wx, m->by, m->ww, bh);
 				XMoveResizeWindow(dpy, m->barwin, m->wx+sp, m->by+vp, m->ww-2*sp, bh);
 			}
@@ -812,7 +785,6 @@ Monitor *
 createmon(void)
 {
 	Monitor *m;
-	/*NOTE(mh): Added from diff*/
 	unsigned int i;
 
 	m = ecalloc(1, sizeof(Monitor));
@@ -821,14 +793,12 @@ createmon(void)
 	m->nmaster = nmaster;
 	m->showbar = showbar;
 	m->topbar = topbar;
-	// NOTE(mh): Dear Matthew, fuck you
 	m->gappx = gappx;
-	// m->gappx = 5;*NOTE(mh): Dear Matthew, double fuck you
+	// m->gappx = 5;
 	m->lt[0] = &layouts[0];
 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
 	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
 
-	/*NOTE(mh): Added from diff*/
 	m->pertag = ecalloc(1, sizeof(Pertag));
 	m->pertag->curtag = m->pertag->prevtag = 1;
 
@@ -903,14 +873,11 @@ drawbar(Monitor *m)
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
-	/*NOTE(mh): Added from diff*/
 	const char *tagtext;
-	/*NOTE(mh): Added from diff*/
 	unsigned int a = 0, s = 0;
 	Client *c;
 
 	/* draw status first so it can be overdrawn by tags later */
-	/*NOTE(mh): Added from diff*/
 	if(m->lt[m->sellt]->arrange == monocle) {
 		for(c = nexttiled(m->clients), a = 0, s = 0; c; c = nexttiled(c->next), a++)
 			if(c == m->stack)
@@ -925,7 +892,6 @@ drawbar(Monitor *m)
 	if (m == selmon) { /* status is only drawn on selected monitor */
 		drw_setscheme(drw, scheme[SchemeNorm]);
 		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
-		/*NOTE(mh): Added from diff*/
 		//drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
 		drw_text(drw, m->ww - tw - 2 * sp, 0, tw, bh, 0, stext, 0);
 	}
@@ -937,10 +903,8 @@ drawbar(Monitor *m)
 	}
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
-		/*NOTE(mh): Added from diff (post the down one)*/
 		//w = TEXTW(tags[i]);
 
-		/*NOTE(mh): Added from diff*/
 		//drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
 		tagtext = occ & 1 << i ? alttags[i] : tags[i];
 		w = TEXTW(tagtext);
@@ -961,7 +925,6 @@ drawbar(Monitor *m)
 		if (m->sel) {
 			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
 			// tlpad = MAX((m->ww - ((int)TEXTW(m->sel->name) - lrpad)) / 2 - x, lrpad / 2);
-			/*NOTE(mh): Added from diff*/
 			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
 			// drw_text(drw, x, 0, w - 2 * sp, bh, tlpad, m->sel->name, 0);
 			if (m->sel->isfloating)
@@ -970,8 +933,7 @@ drawbar(Monitor *m)
 				// boxw, boxw, m->sel->isfixed, 0);
 		} else {
 			drw_setscheme(drw, scheme[SchemeNorm]);
-			/*NOTE(mh): Added from diff*/
-			//drw_rect(drw, x, 0, w, bh, 1, 1); //*NOTE(mh): Maybe this draws it on the bottom?
+			//drw_rect(drw, x, 0, w, bh, 1, 1);
 			drw_rect(drw, x, 0, w - 2 * sp, bh, 1, 1);
 		}
 	}
@@ -986,8 +948,6 @@ drawbars(void)
 	for (m = mons; m; m = m->next)
 		drawbar(m);
 }
-
-/*NOTE(mh): See original*/
 
 void
 expose(XEvent *e)
@@ -1185,7 +1145,6 @@ grabkeys(void)
 void
 incnmaster(const Arg *arg)
 {
-	/*NOTE(mh): Added from diff*/
 	//selmon->nmaster = MAX(selmon->nmaster + arg->i, 0);
 	selmon->nmaster = selmon->pertag->nmasters[selmon->pertag->curtag] = MAX(selmon->nmaster + arg->i, 0);
 	arrange(selmon);
@@ -1335,15 +1294,12 @@ monocle(Monitor *m)
 	/*if (n > 0) * override layout symbol /
 		snprintf(m->ltsymbol, sizeof m->ltsymbol, "%d", n);*/
 	for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
-		/*NOTE(mh): Hoping this works*/
 		//resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
 		resize(c,
 				   m->wx + m->gappx, m->wy + m->gappx,
 				   m->ww - 2 * (c->bw + m->gappx), m->wh - 2 * (c->bw + m->gappx),
 					 0);
 }
-
-/*NOTE(mh): See original*/
 
 void
 movemouse(const Arg *arg)
@@ -1597,7 +1553,6 @@ run(void)
 	XEvent ev;
 	/* main event loop */
 	XSync(dpy, False);
-	/*NOTE(mh): This is risky, but I think it fixes shit*/
 	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx + sp, selmon->by + vp, selmon->ww - 2 * sp, bh);
 	while (running && !XNextEvent(dpy, &ev))
 		if (handler[ev.type])
@@ -1656,7 +1611,6 @@ setclientstate(Client *c, long state)
 		PropModeReplace, (unsigned char *)data, 2);
 }
 
-/*NOTE(mh): Added from diff*/
 void
 setcurrentdesktop(void){
 	long data[] = { 0 };
@@ -1693,7 +1647,6 @@ sendevent(Client *c, Atom proto)
 	return exists;
 }
 
-/*NOTE(mh): Added from diff*/
 void
 setnumdesktops(void){
 	long data[] = { TAGSLENGTH };
@@ -1750,7 +1703,6 @@ setgaps(const Arg *arg)
 	arrange(selmon);
 }
 
-/*NOTE(mh): Added from diff*/
 void
 setlayout(const Arg *arg)
 {
@@ -1778,7 +1730,6 @@ setmfact(const Arg *arg)
 	f = arg->f < 1.0 ? arg->f + selmon->mfact : arg->f - 1.0;
 	if (f < 0.05 || f > 0.95)
 		return;
-	/*NOTE(mh): Added from diff*/
 	//selmon->mfact = f;
 	selmon->mfact = selmon->pertag->mfacts[selmon->pertag->curtag] = f;
 	arrange(selmon);
@@ -1806,7 +1757,6 @@ setup(void)
 	// bh = drw->fonts->h + 2;
 	bh = custom_bh;
 	updategeom();
-	/*NOTE(mh): Added from diff*/
 	sp = sidepad;
 	vp = (topbar == 1) ? vertpad : - vertpad;
 	/* init atoms */
@@ -1825,7 +1775,6 @@ setup(void)
 	netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
 	netatom[NetWMWindowTypeDialog] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
 	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", False);
-	/*NOTE(mh): Added from diff (4)*/
 	netatom[NetDesktopViewport] = XInternAtom(dpy, "_NET_DESKTOP_VIEWPORT", False);
 	netatom[NetNumberOfDesktops] = XInternAtom(dpy, "_NET_NUMBER_OF_DESKTOPS", False);
 	netatom[NetCurrentDesktop] = XInternAtom(dpy, "_NET_CURRENT_DESKTOP", False);
@@ -1844,8 +1793,7 @@ setup(void)
 	/* init bars */
 	updatebars();
 	updatestatus();
-	/*NOTE(mh): Added from diff*/
-	updatebarpos(selmon); //*NOTE(mh): Maybe this as well??
+	updatebarpos(selmon);
 	/* supporting window for NetWMCheck */
 	wmcheckwin = XCreateSimpleWindow(dpy, root, 0, 0, 1, 1, 0, 0, 0);
 	XChangeProperty(dpy, wmcheckwin, netatom[NetWMCheck], XA_WINDOW, 32,
@@ -1857,7 +1805,6 @@ setup(void)
 	/* EWMH support per view */
 	XChangeProperty(dpy, root, netatom[NetSupported], XA_ATOM, 32,
 		PropModeReplace, (unsigned char *) netatom, NetLast);
-	/*NOTE(mh): Added from diff (4)*/
 	setnumdesktops();
 	setcurrentdesktop();
 	setdesktopnames();
@@ -1874,7 +1821,6 @@ setup(void)
 	focus(NULL);
 }
 
-/*NOTE(mh): Added from diff*/
 void
 setviewport(void){
 	long data[] = { 0, 0 };
@@ -1894,7 +1840,6 @@ seturgent(Client *c, int urg)
 	XFree(wmh);
 }
 
-/*NOTE(mh): Added from diff*/
 void
 shiftviewclients(const Arg *arg)
 {
@@ -1965,13 +1910,15 @@ sigchld(int unused)
 void
 spawn(const Arg *arg)
 {
-	if (arg->v == dmenucmd)
+	if (arg->v == dmenucmd || arg->v == actual_dmenucmd)
 		dmenumon[0] = '0' + selmon->num;
 	if (fork() == 0) {
 		if (dpy)
 			close(ConnectionNumber(dpy));
 		setsid();
+
 		execvp(((char **)arg->v)[0], (char **)arg->v);
+
 		fprintf(stderr, "dwm: execvp %s", ((char **)arg->v)[0]);
 		perror(" failed");
 		exit(EXIT_SUCCESS);
@@ -1996,10 +1943,6 @@ tagmon(const Arg *arg)
 	sendmon(selmon->sel, dirtomon(arg->i));
 }
 
-/*NOTE(mh): Change this back if changed*/
-/*NOTE.IMPORTANT(mh): This seems to be in conflict with `barpadding`
- *	Original @ earlier commit || vm-dwm-original
-*/
 void
 tile(Monitor *m)
 {
@@ -2041,11 +1984,9 @@ tile(Monitor *m)
 void
 togglebar(const Arg *arg)
 {
-	/*NOTE(mh): Added from diff*/
 	//selmon->showbar = !selmon->showbar;
 	selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag] = !selmon->showbar;
 	updatebarpos(selmon);
-	/*NOTE(mh): Added from diff*/
 	//XMoveResizeWindow(dpy, selmon->barwin, selmon->wx, selmon->by, selmon->ww, bh);
 	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx + sp, selmon->by + vp, selmon->ww - 2 * sp, bh);
 	arrange(selmon);
@@ -2081,12 +2022,10 @@ toggletag(const Arg *arg)
 		selmon->sel->tags = newtags;
 		focus(NULL);
 		arrange(selmon);
-		/*NOTE(mh): Added from diff*/
 		updatecurrentdesktop();
 	}
 }
 
-/*NOTE(mh): Added from diff*/
 void
 toggleview(const Arg *arg)
 {
@@ -2120,7 +2059,6 @@ toggleview(const Arg *arg)
 
 		focus(NULL);
 		arrange(selmon);
-		/*NOTE(mh): Added from diff*/
 		updatecurrentdesktop();
 	}
 }
@@ -2199,7 +2137,6 @@ updatebars(void)
 	}
 }
 
-/*NOTE(mh): Added from diff*/
 void
 updatebarpos(Monitor *m)
 {
@@ -2231,7 +2168,6 @@ updateclientlist()
 				(unsigned char *) &(c->win), 1);
 }
 
-/*NOTE(mh): Added from diff*/
 void updatecurrentdesktop(void){
 	long rawdata[] = { selmon->tagset[selmon->seltags] };
 	int i=0;
@@ -2427,11 +2363,6 @@ updatewmhints(Client *c)
 	}
 }
 
-/*NOTE(mh): Added from diff
-(pc) Original  @  /mnt/hdd/backup/dwm-original
-(vm) Original  @  /home/mh/mhs-dwm-original
-*/
-
 void
 view(const Arg *arg)
 {
@@ -2470,7 +2401,6 @@ view(const Arg *arg)
 
 	focus(NULL);
 	arrange(selmon);
-	/*NOTE(mh): Added from diff*/
 	updatecurrentdesktop();
 }
 

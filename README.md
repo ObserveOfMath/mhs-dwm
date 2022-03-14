@@ -4,13 +4,10 @@ This is my (quite) patched version of dwm available in source-ready so that you 
 
 ## Install
 ```shell
-	git clone https://github.com/observeofmath/mhs-dwm.git
+	git clone https://github.com/matthmr/mhs-dwm.git
 	cd mhs-dwm
 	make install
 ```
 
 ## Depends
 - Standard Xorg/X11 libraries (e.g. `xlib`)
-
-## Current appearance
-![](https://raw.githubusercontent.com/matthmr/mhs-dwm/main/output-2.gif)
