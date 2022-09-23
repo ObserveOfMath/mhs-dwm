@@ -1,18 +1,3 @@
-# Standard C
+# Binary
 *.o
-*.def.h
-
-# Specific
-*.png
 dwm
-*.tar
-tags
-
-# VM analysis
-*-an*
-*.vim
-*-debug*
-print
-
-# Workflow
-.vscode/

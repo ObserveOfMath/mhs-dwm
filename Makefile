@@ -8,9 +8,6 @@ OBJ = ${SRC:.c=.o}
 
 all: options dwm
 
-debug:
-	gcc dwm-debug.c -o print
-
 options:
 	@echo dwm build options:
 	@echo "CFLAGS   = ${CFLAGS}"
@@ -27,23 +24,28 @@ config.h:
 
 dwm: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
-	cp dwm /home/mh/Source/bin/dwm
 
 clean:
-	rm -f dwm ${OBJ}
+	rm -f dwm ${OBJ} dwm-${VERSION}.tar.gz
 
-uninstall:
-	rm -f /usr/local/bin/dwm
+dist: clean
+	mkdir -p dwm-${VERSION}
+	cp -R LICENSE Makefile README config.def.h config.mk\
+		dwm.1 drw.h util.h ${SRC} dwm.png transient.c dwm-${VERSION}
+	tar -cf dwm-${VERSION}.tar dwm-${VERSION}
+	gzip dwm-${VERSION}.tar
+	rm -rf dwm-${VERSION}
 
 install: all
-	chmod 755 dwm
-	mv dwm /home/mh/Source/dwm
-	
-local: all
-	chmod 755 dwm
+	mkdir -p ${DESTDIR}${PREFIX}/bin
+	cp -f dwm ${DESTDIR}${PREFIX}/bin
+	chmod 755 ${DESTDIR}${PREFIX}/bin/dwm
+	mkdir -p ${DESTDIR}${MANPREFIX}/man1
+	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1
+	chmod 644 ${DESTDIR}${MANPREFIX}/man1/dwm.1
 
-link: all
-	chmod 755 dwm
-	ln -sf dwm /usr/local/bin/dwm
+uninstall:
+	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
+		${DESTDIR}${MANPREFIX}/man1/dwm.1
 
-.PHONY: all options clean install uninstall
+.PHONY: all options clean dist install uninstall
