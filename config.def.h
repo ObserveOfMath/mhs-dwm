@@ -6,11 +6,11 @@ static const unsigned int snap      = 2;        /* snap pixel */
 static const int custom_bh          = 28;
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const int focusonwheel       = 0;
 static const Bool viewontag         = True;
 static const int vertpad            = 0;
 static const int sidepad            = 0;
 static const unsigned int gappx     = 10;
-static const int focusonwheel				= 0;
 static const char *fonts[]          = { "JetBrains Mono:size=12:antialias:true", "monospace:12" };
 static const char col_black[]       = "#222222";
 static const char col_grey[]        = "#444444";
@@ -30,7 +30,8 @@ static const char *colors[][3]      	= {
 };
 
 static const char *const autostart[] = {
-	"xsetroot-statusbar", NULL, // dwm clock
+	"xsetroot-statusbar", NULL,     // dwm clock
+  "emacsserver", "xtoggle", NULL, // emacs server
 	NULL
 };
 
@@ -83,13 +84,17 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_q,      view,           {0} },
-	{ MODKEY|ShiftMask,             XK_k,      killclient,     {0} },
+	{ MODKEY,                       XK_Tab,    alttab,         {.i = +1} },
+	{ MODKEY|ShiftMask,             XK_Tab,    alttab,         {.i = -1} },
+	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
@@ -98,7 +103,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_o,      setlayout,      {.v = &layouts[4]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ControlMask,           XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_s,      togglesticky,   {0} },
+	{ MODKEY,                       XK_s,      swapfocus,      {0} },
+	{ MODKEY|ControlMask,           XK_s,      togglesticky,   {0} },
 	{ MODKEY|ControlMask,           XK_f,      togglefullscr,  {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
